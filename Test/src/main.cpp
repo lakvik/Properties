@@ -21,13 +21,8 @@
  * Created on 26 January 2021, 11:33
  */
 
+#include "lakvik/properties/event.h"
 #include <cstdlib>
-
-using namespace std;
-
-/*
- * 
- */
 int main(int argc, char** argv)
 {
 
