@@ -27,6 +27,11 @@ namespace lakvik::properties
             auto count = id_to_callback.erase(value);
             assert(count == 1);
         }
+        bool empty()const
+        {
+            std::lock_guard guard(lock);
+            return id_to_callback.empty();
+        }
     private:
         id next_id = 0;
         std::mutex lock;
