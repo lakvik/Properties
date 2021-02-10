@@ -25,9 +25,7 @@
 #include <cstdlib>
 int main(int argc, char** argv)
 {
-    using test_event = lakvik::properties::event<int>;
-    using test_threadsafe_event = lakvik::properties::threadsafe_event_for<test_event>;
-    test_threadsafe_event event;
+    
     return 0;
 }
 

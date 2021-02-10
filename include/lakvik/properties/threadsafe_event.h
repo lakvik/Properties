@@ -34,7 +34,7 @@ namespace lakvik::properties
         }
     private:
         id next_id = 0;
-        std::mutex lock;
+        mutable std::mutex lock;
         std::unordered_map<id,callback> id_to_callback;
     };
     template<typename t>
