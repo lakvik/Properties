@@ -32,6 +32,14 @@ namespace lakvik::properties
             std::lock_guard guard(lock);
             return id_to_callback.empty();
         }
+        void operator()(args... values)
+        {
+            std::lock_guard guard(lock);
+            for(auto& [i,cb] : id_to_callback)
+            {
+                cb(values...);
+            }
+        }
     private:
         id next_id = 0;
         mutable std::mutex lock;

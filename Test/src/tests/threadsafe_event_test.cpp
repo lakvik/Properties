@@ -23,18 +23,20 @@
 #include "lakvik/properties/threadsafe_event.h"
 #include <stdlib.h>
 #include <iostream>
+using test_event = lakvik::properties::event<int>;
+using test_threadsafe_event = lakvik::properties::threadsafe_event_for<test_event>;
 
 void test1()
 {
     std::cout << "threadsafe_event_test test 1" << std::endl;
-    using test_event = lakvik::properties::event<int>;
-    using test_threadsafe_event = lakvik::properties::threadsafe_event_for<test_event>;
     test_threadsafe_event event;
     if(!event.empty())
     {
         std::cout << "%TEST_FAILED% time=0 testname=test1 (threadsafe_event_test) message=default constructed event not empty" << std::endl;
     }
-    auto id = event.add([](int){});
+    auto id = event.add([](int)
+    {
+    });
     if(event.empty())
     {
         std::cout << "%TEST_FAILED% time=0 testname=test1 (threadsafe_event_test) message=callback not added" << std::endl;
@@ -48,8 +50,22 @@ void test1()
 
 void test2()
 {
-    //std::cout << "threadsafe_event_test test 2" << std::endl;
-    //std::cout << "%TEST_FAILED% time=0 testname=test2 (threadsafe_event_test) message=error message sample" << std::endl;
+    std::cout << "threadsafe_event_test test 2" << std::endl;
+    test_threadsafe_event event;
+    event(1);
+    int c = 0;
+    auto id = event.add([&](int i){c = i;});
+    event(2);
+    if(c!=2)
+    {
+        std::cout << "%TEST_FAILED% time=0 testname=test2 (threadsafe_event_test) message=event not dispatched" << std::endl;
+    }
+    event.remove(id);
+    event(3);
+    if(c!=2)
+    {
+        std::cout << "%TEST_FAILED% time=0 testname=test2 (threadsafe_event_test) message=event not removed" << std::endl;
+    }
 }
 
 int main(int argc, char** argv)
